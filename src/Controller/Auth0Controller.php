@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,9 +23,10 @@ class Auth0Controller extends AbstractController
     }
 
     #[Route('/', name: 'app_auth0_home')]
-    public function index(): RedirectResponse
+    public function index(LoggerInterface $logger): RedirectResponse
     {
         $authUrl = "https://$this->auth0_domain/authorize";
+        $logger->info("AuthUrl: $authUrl");
 
         $scope = "openid profile email";
         $responseType = "code";
@@ -44,11 +46,16 @@ class Auth0Controller extends AbstractController
     /**
      */
     #[Route('/callback', name: 'app_auth0_callback')]
-    public function callback(): JsonResponse
+    public function callback(LoggerInterface $logger): JsonResponse
     {
+        $logger->info("IN CALLBACK");
         // Not actually used ;)
         $redirectUri = $this->generateUrl('app_auth0_all_done', array(), UrlGeneratorInterface::ABSOLUTE_URL);
-        $code = $_GET['code'];
+        try {
+            $code = $_GET['code'];
+        } catch (\Exception $e) {
+            return new JsonResponse($_GET);
+        }
 
         $tokenUrl = "https://$this->auth0_domain/oauth/token";
         $payload = [
@@ -72,19 +79,24 @@ class Auth0Controller extends AbstractController
 
         $idToken = $responseData['id_token'];
         $jwtParts = explode('.', $idToken);
-        $payload = base64_decode($jwtParts[1], true);
+        $claims_payload = self::urlsafeB64Decode($jwtParts[1]);
+        $claims = json_decode($claims_payload, true);
 
-        $claims = json_decode($payload);
+        $data = [
+            'auth0domain' => $this->auth0_domain,
+        ];
+        if ($claims) {
+            $data['claims'] = $claims;
+        } else {
+            $data["idToken"] = $idToken;
+            $data["claims_payload"] = $claims_payload;
+        }
 
-        return new JsonResponse([
-            'jwtParts[1]' => $jwtParts[1],
-            'payload' => mb_convert_encoding($payload, 'UTF-8', 'UTF-8'),
-            'claims' => $claims
-        ]);
+        return new JsonResponse($data);
     }
 
     #[Route('/logout', name: 'app_auth0_logout')]
-    public function logout(): JsonResponse
+    public function logout(LoggerInterface $logger): JsonResponse
     {
         $authUrl = "https://$this->auth0_domain/logout";
         $callback = $this->generateUrl('app_auth0_all_done', array(), UrlGeneratorInterface::ABSOLUTE_URL);
@@ -94,5 +106,21 @@ class Auth0Controller extends AbstractController
             "redirect_uri=$callback";
         $response = file_get_contents($url, false);
         return new JsonResponse(["all" => $response]);
+    }
+
+    #[Route('/logout', name: 'app_auth0_all_done')]
+    public function allDone(LoggerInterface $logger): JsonResponse
+    {
+        return new JsonResponse(["all" => ""]);
+    }
+
+    public static function urlsafeB64Decode($input)
+    {
+        $remainder = strlen($input) % 4;
+        if ($remainder) {
+            $padlen = 4 - $remainder;
+            $input .= str_repeat('=', $padlen);
+        }
+        return base64_decode(strtr($input, '-_', '+/'));
     }
 }

@@ -1,0 +1,23 @@
+<EntityDescriptor entityID="urn:the-rsa-preproduction.eu.auth0.com" xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
+  <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <KeyDescriptor use="signing">
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <X509Certificate>MIIDHzCCAgegAwIBAgIJASDOVQ61bEgEMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTInRoZS1yc2EtcHJlcHJvZHVjdGlvbi5ldS5hdXRoMC5jb20wHhcNMjIxMDEzMTYzMjE3WhcNMzYwNjIxMTYzMjE3WjAtMSswKQYDVQQDEyJ0aGUtcnNhLXByZXByb2R1Y3Rpb24uZXUuYXV0aDAuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9/IV6bByoxEz8O/udjYYQSsvf7Wh+iBJinhuH0+w7k/AiPuYlc5diDkjCBZhkFi8JTKWbB82FbmjnM8m2X0Y6ksW0ytGueHfDGlz+YVrEkWA9gMdYQUJ3eO4S77A2t5euLQEvBnjf55HnBQIthCNeMk8YnriShHwhHNYnUM8RtS4BV10UUOhhH+PpU4V7sX9ynHgtMTXE6su0A8zDzCfFEMI5J844OcxXfiX0+15wfvuipNjYD2Lv5sfizW2RyXjmdWXYrgo3+ETBuEsXWvuPw9C4sWCaUxL1xVdGwCRH5FFd1rqPgNqOuHdG665U5xp4aH7K3ea3mdUpkvVI/ZW/wIDAQABo0IwQDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSRn0X4bLv+4yq8+oKjAsvui3r7IDAOBgNVHQ8BAf8EBAMCAoQwDQYJKoZIhvcNAQELBQADggEBAB7+BrbxLr48wkPnemlSr59QUTPNUZyNTHyygYjX5oVNmvlsiagMJOpmCd8Qy+J/8I+impgdkOSJ9mcmvVsiKpnLJM3GCeTGPKSVsI3gOs/rkJY6+QwBov6XYyzzsom2qseNDBJSwcn/OBSwg2zSf5Ag2b+oIu0JuPM0yWePgiU2Y6biXPymqtbLKvEEICTfOyfJaMxZtuzQX853p65is+Ig+HMnXeZkf5drwYL/37Z9kJiRrjyuE8PpT61TyFH36r55YeIe+Cx90aPTfRcgsoWep4tew3VKQVBoBJ7jD5gfWHAJUSXby6v74kqaWeArB12ytVkRGaUi4rE38tLRdlk=</X509Certificate>
+        </X509Data>
+      </KeyInfo>
+    </KeyDescriptor>
+    <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://the-rsa-preproduction.eu.auth0.com/samlp/vNg5ffNEv4MUKVbEPpMNDeNy09sqVXqx/logout"/>
+    <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://the-rsa-preproduction.eu.auth0.com/samlp/vNg5ffNEv4MUKVbEPpMNDeNy09sqVXqx/logout"/>
+    <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</NameIDFormat>
+    <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</NameIDFormat>
+    <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+    <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://the-rsa-preproduction.eu.auth0.com/samlp/vNg5ffNEv4MUKVbEPpMNDeNy09sqVXqx"/>
+    <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://the-rsa-preproduction.eu.auth0.com/samlp/vNg5ffNEv4MUKVbEPpMNDeNy09sqVXqx"/>
+    <Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="E-Mail Address" xmlns="urn:oasis:names:tc:SAML:2.0:assertion"/>
+    <Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="Given Name" xmlns="urn:oasis:names:tc:SAML:2.0:assertion"/>
+    <Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="Name" xmlns="urn:oasis:names:tc:SAML:2.0:assertion"/>
+    <Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="Surname" xmlns="urn:oasis:names:tc:SAML:2.0:assertion"/>
+    <Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="Name ID" xmlns="urn:oasis:names:tc:SAML:2.0:assertion"/>
+  </IDPSSODescriptor>
+</EntityDescriptor>
