@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+{% block title %}Auth0 Test App{% endblock %}
+
+{% block header %}
+    <div class="w3-center">
+        <h1 class="w3-xxxlarge w3-animate-bottom">Auth0 Test App</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="w3-center">
+        <h2>Choose the environment to test</h2>
+        {{ form(form) }}
+{% endblock %}
+
+{% block footer %}
+    <div><a href="https://manage.auth0.com/dashboard/eu/the-rsa-integration">RSA Auth0</a></div>
+    <div><a href="https://manage.auth0.com/dashboard/eu/ncvo-development">NCVO Auth0</a></div>
+{% endblock %}

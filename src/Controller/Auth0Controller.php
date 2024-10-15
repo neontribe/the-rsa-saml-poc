@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Form\EnvironmentType;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -23,7 +25,19 @@ class Auth0Controller extends AbstractController
     }
 
     #[Route('/', name: 'app_auth0_home')]
-    public function index(LoggerInterface $logger): RedirectResponse
+    public function index(LoggerInterface $logger): Response
+    {
+
+        $defaultData = ['message' => 'Type your message here'];
+        $form = $this->createForm(EnvironmentType::class);
+
+        return $this->render("auth0/index.html.twig", [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/login', name: 'app_auth0_login')]
+    public function login(LoggerInterface $logger): RedirectResponse
     {
         $authUrl = "https://$this->auth0_domain/authorize";
         $logger->info("AuthUrl: $authUrl");
@@ -95,6 +109,16 @@ class Auth0Controller extends AbstractController
         return new JsonResponse($data);
     }
 
+    public static function urlsafeB64Decode($input)
+    {
+        $remainder = strlen($input) % 4;
+        if ($remainder) {
+            $padlen = 4 - $remainder;
+            $input .= str_repeat('=', $padlen);
+        }
+        return base64_decode(strtr($input, '-_', '+/'));
+    }
+
     #[Route('/logout', name: 'app_auth0_logout')]
     public function logout(LoggerInterface $logger): JsonResponse
     {
@@ -112,15 +136,5 @@ class Auth0Controller extends AbstractController
     public function allDone(LoggerInterface $logger): JsonResponse
     {
         return new JsonResponse(["all" => ""]);
-    }
-
-    public static function urlsafeB64Decode($input)
-    {
-        $remainder = strlen($input) % 4;
-        if ($remainder) {
-            $padlen = 4 - $remainder;
-            $input .= str_repeat('=', $padlen);
-        }
-        return base64_decode(strtr($input, '-_', '+/'));
     }
 }
